@@ -40,6 +40,25 @@ python run_trader.py
 streamlit run dashboard.py
 ```
 
+## moomoo OpenAPI 連携（SIMULATE推奨）
+1. moomoo OpenD をPCで起動（通常 `127.0.0.1:11111`）。
+2. 取引パスワードを環境変数へ設定（PowerShell）:
+```powershell
+$env:MOOMOO_HOST="127.0.0.1"
+$env:MOOMOO_PORT="11111"
+$env:MOOMOO_UNLOCK_PASSWORD="あなたの取引PW"
+$env:MOOMOO_TRD_ENV="SIMULATE"  # 本番は REAL
+$env:MOOMOO_MARKET="US"         # または HK
+$env:TRADE_SYMBOL="US.AAPL"
+```
+3. moomoo連携ランナーを実行:
+```bash
+python run_live_moomoo.py
+```
+
+> 注意: 実行時は手動承認フローが有効で、各注文前に `y/N` 確認が表示されます。
+> 初回は必ず `SIMULATE` 環境で動作確認してください。
+
 ## 手動承認フロー
 - `run_trader.py` は `require_manual_approval=True` で起動するため、
   実際の売買前にコンソールで `実行しますか？ [y/N]` の確認が出ます。

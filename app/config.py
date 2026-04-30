@@ -10,6 +10,12 @@ class AppConfig:
     buy_threshold: float = 0.58
     sell_threshold: float = 0.42
     require_manual_approval: bool = False
+    broker_mode: str = "paper"  # "paper" | "moomoo"
+    moomoo_host: str = "127.0.0.1"
+    moomoo_port: int = 11111
+    moomoo_unlock_password: str = ""
+    moomoo_trd_env: str = "SIMULATE"  # "SIMULATE" | "REAL"
+    moomoo_market: str = "US"  # "US" | "HK"
 
 
 CONFIG = AppConfig()

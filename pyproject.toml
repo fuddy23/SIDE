@@ -19,6 +19,9 @@ dependencies = [
 dev = [
   "pytest>=8.2.0",
 ]
+moomoo = [
+  "futu-api>=9.4.5408",
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

@@ -6,7 +6,7 @@ from typing import Callable
 
 import pandas as pd
 
-from app.broker import Order, PaperBroker
+from app.broker import MoomooBroker, Order, PaperBroker
 from app.config import AppConfig
 from app.db import get_conn, init_db
 from app.model import PriceDirectionModel
@@ -26,7 +26,7 @@ class AutoTrader:
     ) -> None:
         self.config = config
         self.model = PriceDirectionModel()
-        self.broker = PaperBroker()
+        self.broker = self._build_broker()
         self.portfolio = Portfolio(cash=config.initial_cash)
         self.approver = approver or self._console_approver
 
@@ -58,6 +58,17 @@ class AutoTrader:
     def _calc_qty(self, px: float) -> int:
         budget = self.portfolio.cash * self.config.risk_per_trade
         return max(int(budget // px), 0)
+
+    def _build_broker(self) -> PaperBroker | MoomooBroker:
+        if self.config.broker_mode.lower() == "moomoo":
+            return MoomooBroker(
+                host=self.config.moomoo_host,
+                port=self.config.moomoo_port,
+                unlock_password=self.config.moomoo_unlock_password,
+                trd_env=self.config.moomoo_trd_env,
+                market=self.config.moomoo_market,
+            )
+        return PaperBroker()
 
     def _handle_signal(
         self, symbol: str, side: str, qty: int, price: float, prob: float, reason: str
